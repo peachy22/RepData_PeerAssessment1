@@ -8,7 +8,8 @@ output:
 
 ## Loading and preprocessing the data
 
-```{r}
+
+```r
 suppressMessages(library(lubridate))
 
 fileURL<-"https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
@@ -19,7 +20,8 @@ ACT<-read.csv('activity.csv')
 
 ## What is mean total number of steps taken per day?
 
-```{r}
+
+```r
 daysteps<-tapply(ACT$steps, ACT$date,sum,na.rm=TRUE)
 daysteps_mean = round(mean(daysteps))
 daysteps_median = round(median(daysteps))
@@ -33,10 +35,13 @@ abline(v=daysteps_median,col='red')
 legend("topright", c(paste0("Median: ", daysteps_median), paste0("Mean: ", daysteps_mean)), col=c("red", "blue"), lwd=2)
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
 
 ## What is the average daily activity pattern?
 
-```{r}
+
+```r
 intsteps<-tapply(ACT$steps, ACT$interval,mean,na.rm=TRUE)
 intsteps<-as.data.frame(intsteps)
 intsteps <- cbind(time = rownames(intsteps), intsteps)
@@ -52,16 +57,20 @@ abline(v=intsteps_maxinterval,col='green')
 legend("topright", paste("Most Active:", intsteps_max, "steps at interval", intsteps_maxinterval))
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
 ## Imputing missing values
 
-```{r}
+
+```r
 ACT_na<-as.character(sum(!complete.cases(ACT)))
 ```
 
 #### Total missing values: 2304 
 #### Imputing NAs by mean interval steps:
 
-```{r}
+
+```r
 ACT_imp<-ACT
 ACT_imp$steps[ACT_imp$interval == intsteps$time & is.na(ACT_imp$steps)]<-intsteps$intsteps
 daysteps_imp<-tapply(ACT_imp$steps, ACT_imp$date,sum,na.rm=TRUE)
@@ -88,12 +97,15 @@ abline(v=daysteps_imp_mean,col='blue',lwd=2)
 abline(v=daysteps_imp_median,col='red',lwd=2)
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+
 #### The imputed histogram implies a more "normally" distributed number of steps per time interval. The activity is generally low at night and in the morning, with a peak at midday. This is more reasonable than the original data.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
+
+```r
 ACT_imp$date<-as.POSIXlt(ymd(ACT_imp$date))
 ACT_imp$day<-weekdays(ACT_imp$date)
 day_levels <- c("Weekday","Weekend")
@@ -121,5 +133,7 @@ plot(x=intsteps_weekend$time,y=intsteps_weekend$intsteps,type="l",
         xlab="Interval (5-minute)",
         ylab="Average Steps Observed")
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 #### Weekend activity is generlly higher than weekday activity across all times of day, except for the early morning which suggests an effect of "sleeping in" on the averaged activity. Generally, we might expect more physical activity (i.e., less sitting at a desk) on the weekends.
