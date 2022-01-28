@@ -136,4 +136,4 @@ plot(x=intsteps_weekend$time,y=intsteps_weekend$intsteps,type="l",
 
 ![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
-#### Weekend activity is generlly higher than weekday activity across all times of day, except for the early morning which suggests an effect of "sleeping in" on the averaged activity. Generally, we might expect more physical activity (i.e., less sitting at a desk) on the weekends.
+#### Weekday activity is generally higher than weekend activity across all times of day.
